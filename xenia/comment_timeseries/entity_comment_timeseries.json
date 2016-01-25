@@ -1,0 +1,21 @@
+{ 
+    "name":"entity_comment_timeseries",
+    "desc":"Returns a time series of comments for a particular entity, user or asset",
+    "enabled" : true,
+    "queries" : [
+        {
+            "name" : "entity_comment_timeseries", 
+            "type" : "pipeline", 
+            "collection" : "comment_timeseries", 
+            "return" : true,
+            "commands" : [
+                { "$match": { "start": {"$gte" : "#date:start" } } }, 
+                { "$match": { "start": {"$lt" : "#date:end" } } }, 
+                { "$match": { "duration": "#string:duration" } }, 
+                { "$match": { "target": "#string:target" } }, 
+                { "$match": { "target_doc._id": "#objid:id" } }, 
+                { "$sort": { "start": 1 } }
+            ]
+        }
+    ]
+}

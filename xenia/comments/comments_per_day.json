@@ -1,0 +1,19 @@
+{
+   "name":"comments_per_day",
+   "desc":"comments per day",
+   "enabled":true,
+   "queries":[
+      {
+         "name":"comments_by_asset",
+         "type":"pipeline",
+         "collection":"comment",
+         "return":true,
+         "commands":[
+            { "$match": { "date_created": {"$gt" : "#date:start_date"} } },
+            { "$match": { "date_created": {"$lt" : "#date:end_date"} } },
+            { "$group": { "_id": { "day": { "$dayOfMonth": "$date_created" }, "month": { "$month": "$date_created" }, "year": { "$year": "$date_created" } }, "comments": { "$sum": 1 } } }
+         ]
+      }
+   ]
+}
+
